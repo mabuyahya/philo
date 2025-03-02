@@ -14,13 +14,11 @@
 
 pthread_mutex_t		test = PTHREAD_MUTEX_INITIALIZER;
 
-void	init_all_mutexs(pthread_mutex_t **mutexs, int num, int	*flag)
+void	init_all_mutexs(pthread_mutex_t **mutexs, int num, t_main *main)
 {
 	int	i;
 
-	if (*flag)
-		return;
-	*flag = 1;
+	
 	i = 0;
 	*mutexs = malloc(sizeof(pthread_mutex_t) * num);
 	while (i < num)
@@ -28,48 +26,45 @@ void	init_all_mutexs(pthread_mutex_t **mutexs, int num, int	*flag)
 		pthread_mutex_init(&(*mutexs)[i], NULL);
 		i++;
 	}
+	pthread_mutex_init(&main->philo_num_mutex, NULL);
 
 }
 
-void *rotene(void **args)
+void *rotene(void *ptr)
 {
 	static int	i;
-	static int flag = 0;
-	static pthread_mutex_t	*mutexs;
-
+	t_main *main;
 	
-	pthread_mutex_lock(&test);
-	init_all_mutexs(&mutexs, ft_atoi(args[1]), &flag);
-	pthread_mutex_unlock(&test);
-	take_a_fork(mutexs, i, ft_atoi(args[1]));
-	unlock_a_fork(mutexs, i, ft_atoi(args[1]));
+	main = (t_main *) ptr;
+	pthread_mutex_lock(&main->philo_num_mutex);
+	i++;
+	pthread_mutex_unlock(&main->philo_num_mutex);
+	take_a_fork(main->forks, i, main->philos_num);
+	unlock_a_fork(main->forks, i, main->philos_num);
 	
-	return (args);
+	return (ptr);
 }
 
-int create_all_the_thread(pthread_t *philos_id, char **args) 
+int create_all_the_thread(pthread_t *philos_id, t_main *main) 
 {
 	int	i;
-	int	philos_num;
 
-	philos_num = ft_atoi(args[1]);
 	i = 0;
-	while (i < philos_num)
+	init_all_mutexs(&main->forks, main->philos_num, main);
+	while (i < main->philos_num)
 	{
-		pthread_create(&philos_id[i], NULL,(void *) rotene, (void *) args);
+		pthread_create(&philos_id[i], NULL,(void *) rotene, (void *) main);
 		i++;
 	}
 	return (1);
 }
 
-int	wait_all_the_thread(pthread_t *philos_id, char **args)
+int	wait_all_the_thread(pthread_t *philos_id, t_main *main)
 {
 	int	i;
-	int	philos_num;
 
 	i = 0;
-	philos_num = ft_atoi(args[1]);
-	while (i < philos_num)
+	while (i < main->philos_num)
 	{
 		pthread_join(philos_id[i], NULL);
 		i++;
@@ -79,14 +74,15 @@ int	wait_all_the_thread(pthread_t *philos_id, char **args)
 
 int    main(int argc, char **argv)
 {
-	char **args;
+	t_main	main;
 
-	args = ft_strdup_matrix(argv);
-	pthread_t	philos_id[ft_atoi(args[1])];
+	main.args = ft_strdup_matrix(argv);
+	main.philos_num = ft_atoi(main.args[1]);
+	pthread_t	philos_id[main.philos_num];
 	if (argc == 5 || argc == 6)			
 	{
-		create_all_the_thread(philos_id, args);
-		wait_all_the_thread(philos_id, args);
+		create_all_the_thread(philos_id, &main);
+		wait_all_the_thread(philos_id, &main);
 	}
 	else
 	printf("the argv's should be 4 or 5");
