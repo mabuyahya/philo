@@ -1,18 +1,29 @@
 NAME = philo
+LIBFT_DIR = lib/libft
+LIBFT = libft
+
 CC = cc
-CFLAGS = -Wall -Werror -Wextra 
+CFLAGS = -Wall -Werror -Wextra -g -L ./$(LIBFT_DIR) -lft
 SRCS = $(wildcard *.c)
 OBJ = $(SRCS:%.c=%.o)
 
-all : $(NAME)
+all : $(LIBFT) $(NAME) 
+
 $(NAME) : $(OBJ)
-	$(CC) $(CFLAGS) -lpthread $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS)   -lpthread $(OBJ) lib/libft/libft.a -o $(NAME)
+
+$(LIBFT) : 
+	make -C $(LIBFT_DIR)
 
 clean : 
 	rm -rf $(OBJ)
+	make clean -C $(LIBFT_DIR)
+
 fclean : 
 	rm -rf $(OBJ)
 	rm -rf $(NAME)
+	make fclean -C $(LIBFT_DIR)
+
 re : fclean all
 
 
