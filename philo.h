@@ -9,14 +9,18 @@
 
 typedef struct s_main
 {
-    int id;
     char **args;
 	pthread_mutex_t	*forks;
     int philos_num;
+    pthread_t *philos_ids;
     pthread_mutex_t philo_num_mutex;
-    int num;
 }   t_main;
 
+typedef struct s_philosofre
+{
+    int num;
+    pthread_t philo_thread_id;
+}   t_philosofre;
 
 char **ft_strdup_matrix(char **str);
 void    take_a_fork(pthread_mutex_t *forks, int i, int  num);

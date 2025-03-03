@@ -3,14 +3,14 @@ LIBFT_DIR = lib/libft
 LIBFT = libft
 
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -g -L ./$(LIBFT_DIR) -lft
+CFLAGS = -Wall -Werror -Wextra -g 
 SRCS = $(wildcard *.c)
 OBJ = $(SRCS:%.c=%.o)
 
 all : $(LIBFT) $(NAME) 
 
 $(NAME) : $(OBJ)
-	$(CC) $(CFLAGS)   -lpthread $(OBJ) lib/libft/libft.a -o $(NAME)
+	$(CC) $(CFLAGS) -L ./$(LIBFT_DIR) -lft -lpthread $(OBJ) lib/libft/libft.a -o $(NAME)
 
 $(LIBFT) : 
 	make -C $(LIBFT_DIR)

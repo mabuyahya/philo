@@ -6,7 +6,7 @@
 /*   By: mabuyahy <mabuyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:31:09 by mabuyahy          #+#    #+#             */
-/*   Updated: 2025/02/28 19:19:50 by mabuyahy         ###   ########.fr       */
+/*   Updated: 2025/03/03 04:21:28 by mabuyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,44 +45,51 @@ void *rotene(void *ptr)
 	return (ptr);
 }
 
-int create_all_the_thread(pthread_t *philos_id, t_main *main) 
+int create_all_the_thread(t_main *main) 
 {
 	int	i;
 
 	i = 0;
-	init_all_mutexs(&main->forks, main->philos_num, main);
 	while (i < main->philos_num)
 	{
-		pthread_create(&philos_id[i], NULL,(void *) rotene, (void *) main);
+		pthread_create(&main->philos_ids[i], NULL, rotene, main);
 		i++;
 	}
 	return (1);
 }
 
-int	wait_all_the_thread(pthread_t *philos_id, t_main *main)
+int	wait_all_the_thread(t_main *main)
 {
 	int	i;
 
 	i = 0;
 	while (i < main->philos_num)
 	{
-		pthread_join(philos_id[i], NULL);
+		pthread_join(main->philos_ids[i], NULL);
 		i++;
 	}
 	return (1);
+}
+
+void	main_init(t_main *main, char **argv)
+{
+	main->args = ft_strdup_matrix(argv);
+	main->philos_num = ft_atoi(main->args[1]);
+	init_all_mutexs(&main->forks, main->philos_num, main);
+	main->philos_ids = malloc(sizeof(pthread_t) * main->philos_num);
+	
 }
 
 int    main(int argc, char **argv)
 {
 	t_main	main;
+	
 
-	main.args = ft_strdup_matrix(argv);
-	main.philos_num = ft_atoi(main.args[1]);
-	pthread_t	philos_id[main.philos_num];
+	main_init(&main, argv);
 	if (argc == 5 || argc == 6)			
 	{
-		create_all_the_thread(philos_id, &main);
-		wait_all_the_thread(philos_id, &main);
+		create_all_the_thread(&main);
+		wait_all_the_thread(&main);
 	}
 	else
 	printf("the argv's should be 4 or 5");
