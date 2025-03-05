@@ -14,11 +14,22 @@
 
 void *rotene(void *philo)
 {
-	
-	take_a_fork(philo);
-	unlock_a_fork(philo);
-	
+	while (1)
+	{
+	eating(philo);
+	sleeping(philo);
+	thinking(philo);
+	}
 	return (NULL);
+}
+int	ft_gettimeofday(void)
+{
+	int time;
+	struct timeval c_time;
+
+	gettimeofday(&c_time, NULL);
+	time = (c_time.tv_sec * 1000 + c_time.tv_usec / 1000);
+	return (time);	
 }
 
 int create_all_the_thread(t_main *main) 
@@ -26,6 +37,7 @@ int create_all_the_thread(t_main *main)
 	int	i;
 
 	i = 0;
+	main->start_of_sim = ft_gettimeofday();
 	while (i < main->philos_num)
 	{
 		pthread_create(&main->philos_ids[i], NULL, rotene, &main->philos[i]);

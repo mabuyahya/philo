@@ -3,16 +3,23 @@
 
 #include <stdio.h> 
 #include <pthread.h>
+#include <sys/time.h>
 #include "lib/libft/libft.h"
 
 #define MAX_PHILOS 200
 
+typedef struct s_main t_main;
+
 typedef struct s_philosofre
 {
     int num;
+    
     pthread_mutex_t *right_fork;
     pthread_mutex_t *lift_fork;
     pthread_t philo_thread_id;
+    t_main *main;
+    int time_to_eat;
+    int time_to_sleep;
 }   t_philosofre;
 
 typedef struct s_main
@@ -23,12 +30,16 @@ typedef struct s_main
     pthread_mutex_t philo_num_mutex;
     pthread_t *philos_ids;
     t_philosofre *philos;
+    int start_of_sim;
 }   t_main;
-
+void    eating(t_philosofre *philo);
+void sleeping(t_philosofre *philo);
+void thinking(t_philosofre *philo);
 char **ft_strdup_matrix(char **str);
 void	main_init(t_main *main, char **argv);
 void    take_a_fork(t_philosofre *philos);
 void    unlock_a_fork(t_philosofre *philos);
+int    ft_gettimeofday(void);
 void	philos_init(t_philosofre **philos, t_main *main, char **argv);
 
 #endif

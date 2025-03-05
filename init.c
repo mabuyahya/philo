@@ -6,7 +6,7 @@
 /*   By: mabuyahy <mabuyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 00:24:29 by mabuyahy          #+#    #+#             */
-/*   Updated: 2025/03/04 01:26:27 by mabuyahy         ###   ########.fr       */
+/*   Updated: 2025/03/05 03:47:15 by mabuyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,14 @@ void	philos_init(t_philosofre **philos, t_main *main, char **argv)
 	(void) argv;
 
 	i = 0;
+	
 	*philos = malloc(sizeof(t_philosofre) * main->philos_num);
 	while (i < main->philos_num)
 	{
 		(*philos)[i].num = i;
+		(*philos)[i].time_to_eat = ft_atoi(main->args[3]);
+		(*philos)[i].time_to_sleep = ft_atoi(main->args[4]);
+		(*philos)[i].main = main;
 		if (last_philo(main, i))
 		{
 			(*philos)[i].right_fork = &main->forks[i];
