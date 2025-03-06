@@ -13,13 +13,13 @@ typedef struct s_main t_main;
 typedef struct s_philosofre
 {
     int num;
-    
     pthread_mutex_t *right_fork;
     pthread_mutex_t *lift_fork;
     pthread_t philo_thread_id;
     t_main *main;
-    int time_to_eat;
-    int time_to_sleep;
+    int time_of_last_meal;
+    int time_before_usleep;
+   
 }   t_philosofre;
 
 typedef struct s_main
@@ -31,7 +31,12 @@ typedef struct s_main
     pthread_t *philos_ids;
     t_philosofre *philos;
     int start_of_sim;
+    int time_to_eat;
+    int time_to_sleep;
+    int time_to_die;
 }   t_main;
+
+void    check_if_dead(t_philosofre *philos, int sec);
 void    eating(t_philosofre *philo);
 void sleeping(t_philosofre *philo);
 void thinking(t_philosofre *philo);

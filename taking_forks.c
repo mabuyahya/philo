@@ -11,6 +11,6 @@ void    take_a_fork(t_philosofre *philo)
 }
 void    unlock_a_fork(t_philosofre *philo)
 {
-		pthread_mutex_unlock(philo->lift_fork);
 		pthread_mutex_unlock(philo->right_fork);
+		pthread_mutex_unlock(philo->lift_fork);
 }
