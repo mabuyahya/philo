@@ -37,7 +37,6 @@ int create_all_the_thread(t_main *main)
 	int	i;
 
 	i = 0;
-	main->start_of_sim = ft_gettimeofday();
 	while (i < main->philos_num)
 	{
 		pthread_create(&main->philos_ids[i], NULL, rotene, &main->philos[i]);
@@ -66,12 +65,12 @@ int    main(int argc, char **argv)
 	t_main	main;
 	
 
-	main_init(&main, argv);
 	if (argc == 5 || argc == 6)	
 	{
+		main_init(&main, argv);
 		create_all_the_thread(&main);
 		wait_all_the_thread(&main);
 	}
 	else
-	printf("the argv's should be 4 or 5");
+	printf("the argv's should be 4 or 5\n");
 }

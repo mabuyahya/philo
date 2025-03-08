@@ -27,6 +27,7 @@ typedef struct s_main
     char **args;
     int philos_num;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	*dead;
     pthread_mutex_t philo_num_mutex;
     pthread_t *philos_ids;
     t_philosofre *philos;
@@ -46,5 +47,4 @@ void    take_a_fork(t_philosofre *philos);
 void    unlock_a_fork(t_philosofre *philos);
 int    ft_gettimeofday(void);
 void	philos_init(t_philosofre **philos, t_main *main, char **argv);
-
 #endif

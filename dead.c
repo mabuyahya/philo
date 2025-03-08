@@ -24,6 +24,6 @@ void    check_if_dead(t_philosofre *philo, int  sec)
     if (is_dead(philo))
     {
         printf("[%i] philo number %i is dead \n", (sec - philo->main->start_of_sim) + (philo->main->time_to_die), philo->num + 1);
-        exit(1);
+        
     }
 }

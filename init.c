@@ -12,25 +12,27 @@
 
 #include "philo.h"
 
-void	init_all_mutexs(pthread_mutex_t **mutexs, int num, t_main *main)
+void	init_all_mutexs(pthread_mutex_t **forks, int num, t_main *main)
 {
 	int	i;
 
-	
 	i = 0;
-	*mutexs = malloc(sizeof(pthread_mutex_t) * num);
+	*forks = malloc(sizeof(pthread_mutex_t) * num);
+	main->dead = malloc(sizeof(pthread_mutex_t));
 	while (i < num)
 	{
-		pthread_mutex_init(&(*mutexs)[i], NULL);
+		pthread_mutex_init(&(*forks)[i], NULL);
 		i++;
 	}
 	pthread_mutex_init(&main->philo_num_mutex, NULL);
+	pthread_mutex_init(&(*main->dead), NULL);
 }
 
 void	main_init(t_main *main, char **argv)
 {
 	main->args = ft_strdup_matrix(argv);
 	main->philos_num = ft_atoi(main->args[1]);
+	main->start_of_sim = ft_gettimeofday();
 	init_all_mutexs(&main->forks, main->philos_num, main);
 	main->time_to_eat = ft_atoi(main->args[3]);
 	main->time_to_sleep = ft_atoi(main->args[4]);
@@ -56,6 +58,7 @@ void	philos_init(t_philosofre **philos, t_main *main, char **argv)
 	*philos = malloc(sizeof(t_philosofre) * main->philos_num);
 	while (i < main->philos_num)
 	{
+		(*philos)[i].time_of_last_meal = main->start_of_sim;
 		(*philos)[i].num = i;
 		(*philos)[i].main = main;
 		if (last_philo(main, i))
