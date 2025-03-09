@@ -6,7 +6,7 @@
 /*   By: mabuyahy <mabuyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 03:18:01 by mabuyahy          #+#    #+#             */
-/*   Updated: 2025/03/06 05:57:03 by mabuyahy         ###   ########.fr       */
+/*   Updated: 2025/03/09 06:28:14 by mabuyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,45 @@ int is_dead(t_philosofre *philo)
     return (0);
 }
 
-void    check_if_dead(t_philosofre *philo, int  sec)
+void    check_if_dead(t_philosofre *philo, char c)
 {
-    if (is_dead(philo))
-    {
-        printf("[%i] philo number %i is dead \n", (sec - philo->main->start_of_sim) + (philo->main->time_to_die), philo->num + 1);
-        
-    }
+		if (c == 'f')
+		{
+			if (is_dead)
+			{
+				printf("[%i] philo number %i is dead waiting for fork\n", i
+				(ft_gettimeofday() - philo->main->start_of_sim) + (philo->main->time_to_die), philo->num + 1);
+			}
+			else
+			{
+				printf("\033[1;31m%i   philo id %i take a fork\033[0m\n",
+				ft_gettimeofday() - (philo->main->start_of_sim), philo->num + 1);
+			}
+		}	
+		else if (c == 'e')
+		{
+			if (is_dead)
+			{
+				printf("[%i] philo number %i is dead eating\n", i
+				(ft_gettimeofday() - philo->main->start_of_sim) + (philo->main->time_to_die), philo->num + 1);
+			}
+			else
+			{
+				printf("\033[1;31m%i   philo id %i is eating\033[0m\n",
+				ft_gettimeofday() - (philo->main->start_of_sim) - (philo->main->time_to_eat), philo->num + 1);
+			}
+		}
+		else if (c == 's')
+		{
+			if (is_dead)
+			{
+				printf("[%i] philo number %i is dead sleeping\n", i
+				(ft_gettimeofday() - philo->main->start_of_sim) + (philo->main->time_to_die), philo->num + 1);
+			}
+			else
+			{
+				printf("\033[1;31m%i   philo id %i is sleeping\033[0m\n",
+				ft_gettimeofday() - (philo->main->start_of_sim) - (philo->main->time_to_sleep), philo->num + 1);
+			}
+		}
 }

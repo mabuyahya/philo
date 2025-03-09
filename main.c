@@ -16,8 +16,12 @@ void *rotene(void *philo)
 {
 	while (1)
 	{
+	take_a_fork(philo);
+	check_if_dead(philo,'f');
 	eating(philo);
+	check_if_dead(philo, 'e');
 	sleeping(philo);
+	check_if_dead(philo,'s');
 	thinking(philo);
 	}
 	return (NULL);
