@@ -27,7 +27,8 @@ typedef struct s_main
     char **args;
     int philos_num;
 	pthread_mutex_t	*forks;
-	pthread_mutex_t	*dead;
+	pthread_mutex_t	*dead_mutex;
+	int dead;
     pthread_mutex_t philo_num_mutex;
     pthread_t *philos_ids;
     t_philosofre *philos;
@@ -37,14 +38,15 @@ typedef struct s_main
     int time_to_die;
 }   t_main;
 
-void    check_if_dead(t_philosofre *philos, int sec);
-void    eating(t_philosofre *philo);
-void sleeping(t_philosofre *philo);
-void thinking(t_philosofre *philo);
+void   check_if_dead(t_philosofre *philos, char c);
+void *rotene(void *philo);
+int    eating(t_philosofre *philo);
+int sleeping(t_philosofre *philo);
+int thinking(t_philosofre *philo);
 char **ft_strdup_matrix(char **str);
 void	main_init(t_main *main, char **argv);
-void    take_a_fork(t_philosofre *philos);
-void    unlock_a_fork(t_philosofre *philos);
+int   take_a_fork(t_philosofre *philos);
+void unlock_a_fork(t_philosofre *philos);
 int    ft_gettimeofday(void);
 void	philos_init(t_philosofre **philos, t_main *main, char **argv);
 #endif

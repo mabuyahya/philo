@@ -18,19 +18,20 @@ void	init_all_mutexs(pthread_mutex_t **forks, int num, t_main *main)
 
 	i = 0;
 	*forks = malloc(sizeof(pthread_mutex_t) * num);
-	main->dead = malloc(sizeof(pthread_mutex_t));
+	main->dead_mutex = malloc(sizeof(pthread_mutex_t));
 	while (i < num)
 	{
 		pthread_mutex_init(&(*forks)[i], NULL);
 		i++;
 	}
 	pthread_mutex_init(&main->philo_num_mutex, NULL);
-	pthread_mutex_init(&(*main->dead), NULL);
+	pthread_mutex_init(&(*main->dead_mutex), NULL);
 }
 
 void	main_init(t_main *main, char **argv)
 {
 	main->args = ft_strdup_matrix(argv);
+	main->dead = 0;
 	main->philos_num = ft_atoi(main->args[1]);
 	main->start_of_sim = ft_gettimeofday();
 	init_all_mutexs(&main->forks, main->philos_num, main);

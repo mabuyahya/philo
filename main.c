@@ -12,20 +12,7 @@
 
 #include "philo.h"
 
-void *rotene(void *philo)
-{
-	while (1)
-	{
-	take_a_fork(philo);
-	check_if_dead(philo,'f');
-	eating(philo);
-	check_if_dead(philo, 'e');
-	sleeping(philo);
-	check_if_dead(philo,'s');
-	thinking(philo);
-	}
-	return (NULL);
-}
+
 int	ft_gettimeofday(void)
 {
 	int time;
@@ -44,7 +31,7 @@ int create_all_the_thread(t_main *main)
 	while (i < main->philos_num)
 	{
 		pthread_create(&main->philos_ids[i], NULL, rotene, &main->philos[i]);
-		usleep(0);
+		usleep(1000);
 		i++;
 	}
 	return (1);

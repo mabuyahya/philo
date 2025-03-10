@@ -6,7 +6,7 @@
 /*   By: mabuyahy <mabuyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 03:18:01 by mabuyahy          #+#    #+#             */
-/*   Updated: 2025/03/09 06:28:14 by mabuyahy         ###   ########.fr       */
+/*   Updated: 2025/03/10 03:42:56y mabuyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,19 @@ int is_dead(t_philosofre *philo)
 
 void    check_if_dead(t_philosofre *philo, char c)
 {
+	// int	time;
+	if (!(philo->main->dead))
+	{
 		if (c == 'f')
 		{
-			if (is_dead)
+			if (is_dead(philo))
 			{
-				printf("[%i] philo number %i is dead waiting for fork\n", i
+				printf("[%i] philo number %i is dead waiting for fork\n",
 				(ft_gettimeofday() - philo->main->start_of_sim) + (philo->main->time_to_die), philo->num + 1);
+				pthread_mutex_lock(philo->main->dead_mutex);
+				if (!(philo->main->dead))
+					philo->main->dead = 1;
+				pthread_mutex_unlock(philo->main->dead_mutex);
 			}
 			else
 			{
@@ -34,30 +41,30 @@ void    check_if_dead(t_philosofre *philo, char c)
 				ft_gettimeofday() - (philo->main->start_of_sim), philo->num + 1);
 			}
 		}	
-		else if (c == 'e')
+		if (c == 'e')
 		{
-			if (is_dead)
+			
+			if (is_dead(philo))
 			{
-				printf("[%i] philo number %i is dead eating\n", i
-				(ft_gettimeofday() - philo->main->start_of_sim) + (philo->main->time_to_die), philo->num + 1);
-			}
-			else
-			{
-				printf("\033[1;31m%i   philo id %i is eating\033[0m\n",
-				ft_gettimeofday() - (philo->main->start_of_sim) - (philo->main->time_to_eat), philo->num + 1);
+				printf("[%i] philo number %i is dead eating\n",
+					   ft_gettimeofday() - (philo->main->start_of_sim) - (philo->main->time_to_eat) + (philo->main->time_to_die), philo->num + 1);
+				pthread_mutex_lock(philo->main->dead_mutex);
+				if (!(philo->main->dead))
+					philo->main->dead = 1;
+				pthread_mutex_unlock(philo->main->dead_mutex);
 			}
 		}
-		else if (c == 's')
+		if (c == 's')
 		{
-			if (is_dead)
+			if (is_dead(philo))
 			{
-				printf("[%i] philo number %i is dead sleeping\n", i
-				(ft_gettimeofday() - philo->main->start_of_sim) + (philo->main->time_to_die), philo->num + 1);
-			}
-			else
-			{
-				printf("\033[1;31m%i   philo id %i is sleeping\033[0m\n",
-				ft_gettimeofday() - (philo->main->start_of_sim) - (philo->main->time_to_sleep), philo->num + 1);
+				printf("[%i] philo number %i is dead sleeping\n",
+				 ft_gettimeofday() - (philo->main->start_of_sim) - (philo->main->time_to_sleep) + (philo->main->time_to_die) - (philo->main->time_to_eat), philo->num + 1);
+				pthread_mutex_lock(philo->main->dead_mutex);
+				if (!(philo->main->dead))
+					philo->main->dead = 1;
+				pthread_mutex_unlock(philo->main->dead_mutex);
 			}
 		}
+	}
 }

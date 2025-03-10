@@ -5,8 +5,8 @@ LIBFT = libft
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -g 
 SRCS = $(wildcard *.c)
-OBJ = $(SRCS:%.c=%.o)
-
+SIM_OBJ = $(SRCS:%.c=%.o)
+OBJ = $(addprefix obj/, $(SIM_OBJ))
 all : $(LIBFT) $(NAME) 
 
 $(NAME) : $(OBJ)
@@ -14,6 +14,10 @@ $(NAME) : $(OBJ)
 
 $(LIBFT) : 
 	make -C $(LIBFT_DIR)
+
+obj/%.o : %.c
+	@mkdir -p obj
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean : 
 	rm -rf $(OBJ)
