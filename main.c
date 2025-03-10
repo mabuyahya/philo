@@ -31,7 +31,7 @@ int create_all_the_thread(t_main *main)
 	while (i < main->philos_num)
 	{
 		pthread_create(&main->philos_ids[i], NULL, rotene, &main->philos[i]);
-		usleep(1000);
+		usleep(10);
 		i++;
 	}
 	return (1);
@@ -44,9 +44,11 @@ int	wait_all_the_thread(t_main *main)
 	i = 0;
 	while (i < main->philos_num)
 	{
-		pthread_join(main->philos_ids[i], NULL);
+		pthread_detach(main->philos_ids[i]);
 		i++;
 	}
+	while (!(main->dead))
+		;
 	return (1);
 }
 

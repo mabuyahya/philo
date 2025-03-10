@@ -2,13 +2,7 @@
 
 int     take_a_fork(t_philosofre *philo)
 {
-    pthread_mutex_lock(philo->main->dead_mutex);
-	if (philo->main->dead)
-	{
-    pthread_mutex_unlock(philo->main->dead_mutex);
-		return (1);
-	}
-    pthread_mutex_unlock(philo->main->dead_mutex);
+	philo->time_before_usleep = ft_gettimeofday();
 	pthread_mutex_lock(philo->right_fork);
 	pthread_mutex_lock(philo->lift_fork);
 	return (0);

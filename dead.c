@@ -6,65 +6,75 @@
 /*   By: mabuyahy <mabuyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 03:18:01 by mabuyahy          #+#    #+#             */
-/*   Updated: 2025/03/10 03:42:56y mabuyahy         ###   ########.fr       */
+/*   Updated: 2025/03/11 00:31:39 by mabuyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int is_dead(t_philosofre *philo)
+int is_dead(t_philosofre *philo, char c)
 {
-    if (ft_gettimeofday() - (philo->time_of_last_meal) >= philo->main->time_to_die)
-        return (1);
-    return (0);
+	if (c == 'f')
+	{
+		if (ft_gettimeofday() - (philo->time_of_last_meal) >= philo->main->time_to_die)
+			return (1);
+	}
+	if (c == 'e')
+	{
+		if (ft_gettimeofday() - (philo->time_of_last_meal) + (philo->main->time_to_eat) >= philo->main->time_to_die)
+			return (1);
+	}
+	if (c == 's')
+	{
+		if (ft_gettimeofday() - (philo->time_of_last_meal) + (philo->main->time_to_sleep) >= philo->main->time_to_die)
+			return (1);
+	}
+	return (0);
 }
 
 void    check_if_dead(t_philosofre *philo, char c)
 {
-	// int	time;
-	if (!(philo->main->dead))
+	if (c == 'f')
 	{
-		if (c == 'f')
+		if (is_dead(philo, 'f'))
 		{
-			if (is_dead(philo))
-			{
-				printf("[%i] philo number %i is dead waiting for fork\n",
-				(ft_gettimeofday() - philo->main->start_of_sim) + (philo->main->time_to_die), philo->num + 1);
-				pthread_mutex_lock(philo->main->dead_mutex);
-				if (!(philo->main->dead))
-					philo->main->dead = 1;
-				pthread_mutex_unlock(philo->main->dead_mutex);
-			}
-			else
-			{
-				printf("\033[1;31m%i   philo id %i take a fork\033[0m\n",
-				ft_gettimeofday() - (philo->main->start_of_sim), philo->num + 1);
-			}
-		}	
-		if (c == 'e')
-		{
-			
-			if (is_dead(philo))
-			{
-				printf("[%i] philo number %i is dead eating\n",
-					   ft_gettimeofday() - (philo->main->start_of_sim) - (philo->main->time_to_eat) + (philo->main->time_to_die), philo->num + 1);
-				pthread_mutex_lock(philo->main->dead_mutex);
-				if (!(philo->main->dead))
-					philo->main->dead = 1;
-				pthread_mutex_unlock(philo->main->dead_mutex);
-			}
+			pthread_mutex_lock(philo->main->dead_mutex);
+			philo->main->dead = 1;
+			printf("[%i] philo number %i is dead waiting for fork\n",
+				(philo->time_before_usleep) + (philo->main->time_to_die), philo->num + 1);
+				   sleep(2);
 		}
-		if (c == 's')
+		else
 		{
-			if (is_dead(philo))
-			{
-				printf("[%i] philo number %i is dead sleeping\n",
-				 ft_gettimeofday() - (philo->main->start_of_sim) - (philo->main->time_to_sleep) + (philo->main->time_to_die) - (philo->main->time_to_eat), philo->num + 1);
-				pthread_mutex_lock(philo->main->dead_mutex);
-				if (!(philo->main->dead))
-					philo->main->dead = 1;
-				pthread_mutex_unlock(philo->main->dead_mutex);
-			}
+			printf("\033[1;31m%i   philo id %i take a fork\033[0m\n",
+				   ft_gettimeofday() - (philo->main->start_of_sim), philo->num + 1);
+		}
+	}
+	if (c == 'e')
+	{
+		if (is_dead(philo, 'e'))
+		{
+			printf("\033[1;31m%i   philo id %i is eating\033[0m\n",
+				   ft_gettimeofday() - (philo->main->start_of_sim), philo->num + 1);
+			pthread_mutex_lock(philo->main->dead_mutex);
+			philo->main->dead = 1;
+			printf("[%i] philo number %i is dead eating\n",
+				ft_gettimeofday() - (philo->main->start_of_sim) + (philo->main->time_to_die), philo->num + 1);
+				   sleep(4);
+		}
+	}
+	if (c == 's')
+	{
+		if (is_dead(philo, 's'))
+		{
+			printf("-----------%i-------------\n", philo->num);
+			printf("\033[1;33m%i   philo id %i is sleeping\033[0m\n",
+				   ft_gettimeofday() - (philo->main->start_of_sim), philo->num + 1);
+			pthread_mutex_lock(philo->main->dead_mutex);
+			philo->main->dead = 1;
+			printf("[%i] philo number %i is dead sleeping\n",
+				   ft_gettimeofday() - (philo->main->start_of_sim) + (philo->main->time_to_die) - (philo->main->time_to_eat), philo->num + 1);
+				   sleep(2);
 		}
 	}
 }

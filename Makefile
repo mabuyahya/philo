@@ -21,10 +21,12 @@ obj/%.o : %.c
 
 clean : 
 	rm -rf $(OBJ)
+	rm -rf obj
 	make clean -C $(LIBFT_DIR)
 
 fclean : 
 	rm -rf $(OBJ)
+	rm -rf obj
 	rm -rf $(NAME)
 	make fclean -C $(LIBFT_DIR)
 
