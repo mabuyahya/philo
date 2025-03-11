@@ -24,7 +24,6 @@ void *rotene(void *philo)
         check_if_dead(philo, 'e');
         if (eating(philo))
             return (NULL);
-        unlock_a_fork(philo);
         check_if_dead(philo, 's');
         if (sleeping(philo))
             return (NULL);
@@ -33,7 +32,7 @@ void *rotene(void *philo)
     }
     return (NULL);
 }
-int     eating(t_philosofre *philo)
+int eating(t_philosofre *philo)
 {
     pthread_mutex_lock(philo->main->dead_mutex);
     pthread_mutex_unlock(philo->main->dead_mutex);
@@ -41,6 +40,7 @@ int     eating(t_philosofre *philo)
            ft_gettimeofday() - (philo->main->start_of_sim), philo->num + 1);
     philo->time_of_last_meal = ft_gettimeofday();
     usleep((philo->main->time_to_eat * 999));
+    unlock_a_fork(philo);
     return (0);
 }
 int sleeping(t_philosofre *philo)
