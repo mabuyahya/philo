@@ -13,9 +13,9 @@
 #include "philo.h"
 
 
-int	ft_gettimeofday(void)
+long ft_gettimeofday(void)
 {
-	int time;
+	long time;
 	struct timeval c_time;
 
 	gettimeofday(&c_time, NULL);

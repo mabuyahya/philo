@@ -36,7 +36,7 @@ int eating(t_philosofre *philo)
 {
     pthread_mutex_lock(philo->main->dead_mutex);
     pthread_mutex_unlock(philo->main->dead_mutex);
-    printf("\033[1;31m%i   philo id %i is eating\033[0m\n",
+    printf("\033[1;31m%li   philo id %i is eating\033[0m\n",
            ft_gettimeofday() - (philo->main->start_of_sim), philo->num + 1);
     philo->time_of_last_meal = ft_gettimeofday();
     usleep((philo->main->time_to_eat * 999));
@@ -47,7 +47,7 @@ int sleeping(t_philosofre *philo)
 {
     pthread_mutex_lock(philo->main->dead_mutex);
     pthread_mutex_unlock(philo->main->dead_mutex);
-    printf("\033[1;33m%i   philo id %i is sleeping\033[0m\n",
+    printf("\033[1;33m%li   philo id %i is sleeping\033[0m\n",
            ft_gettimeofday() - (philo->main->start_of_sim), philo->num + 1);
     usleep(philo->main->time_to_sleep * 999);
     return (0);
@@ -57,7 +57,7 @@ int thinking(t_philosofre *philo)
 {
     pthread_mutex_lock(philo->main->dead_mutex);
     pthread_mutex_unlock(philo->main->dead_mutex);
-    printf("\033[0;35m%i   philo id %i is thinking\033[0m\n",
+    printf("\033[0;35m%li   philo id %i is thinking\033[0m\n",
            ft_gettimeofday() - (philo->main->start_of_sim), philo->num + 1);
     return (0);
 }
