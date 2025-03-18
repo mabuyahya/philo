@@ -33,13 +33,11 @@ void	main_init(t_main *main, char **argv)
 	main->args = ft_strdup_matrix(argv);
 	main->dead = 0;
 	main->philos_num = ft_atoi(main->args[1]);
-	main->start_of_sim = ft_gettimeofday();
 	init_all_mutexs(&main->forks, main->philos_num, main);
 	main->time_to_eat = ft_atoi(main->args[3]);
 	main->time_to_sleep = ft_atoi(main->args[4]);
 	main->time_to_die = ft_atoi(main->args[2]);
 	main->philos_ids = malloc(sizeof(pthread_t) * main->philos_num);
-    philos_init(&main->philos, main, argv);
 }
 
 int	last_philo(t_main *main, int i)
@@ -49,13 +47,12 @@ int	last_philo(t_main *main, int i)
 	return (0);
 }
 
-void	philos_init(t_philosofre **philos, t_main *main, char **argv)
+void philos_init(t_philosofre **philos, t_main *main)
 {
-	int	i;
-	(void) argv;
+	int i;
 
 	i = 0;
-	
+
 	*philos = malloc(sizeof(t_philosofre) * main->philos_num);
 	while (i < main->philos_num)
 	{
@@ -64,14 +61,14 @@ void	philos_init(t_philosofre **philos, t_main *main, char **argv)
 		(*philos)[i].main = main;
 		if (last_philo(main, i))
 		{
-			(*philos)[i].right_fork = &main->forks[i];
-			(*philos)[i].lift_fork = &main->forks[0];
+			(*philos)[i].right_fork = &main->forks[0];
+			(*philos)[i].lift_fork = &main->forks[i];
 		}
 		else
 		{
 			(*philos)[i].right_fork = &main->forks[i];
 			(*philos)[i].lift_fork = &main->forks[i + 1];
 		}
-        i++;
+		i++;
 	}
 }

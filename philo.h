@@ -8,6 +8,7 @@
 
 #define MAX_PHILOS 200
 
+
 typedef struct s_main t_main;
 
 typedef struct s_philosofre
@@ -40,6 +41,7 @@ typedef struct s_main
 
 void check_if_dead(t_philosofre *philos, char c);
 void *rotene(void *philo);
+void ft_usleep(int time, t_philosofre *philo);
 int eating(t_philosofre *philo);
 int sleeping(t_philosofre *philo);
 int thinking(t_philosofre *philo);
@@ -48,5 +50,6 @@ void main_init(t_main *main, char **argv);
 int take_a_fork(t_philosofre *philos);
 void unlock_a_fork(t_philosofre *philos);
 long ft_gettimeofday(void);
-void philos_init(t_philosofre **philos, t_main *main, char **argv);
+long ft_gettimeofsim(t_philosofre *philo);
+void philos_init(t_philosofre **philos, t_main *main);
 #endif
