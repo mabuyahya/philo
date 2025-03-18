@@ -14,6 +14,7 @@ typedef struct s_main t_main;
 typedef struct s_philosofre
 {
     int num;
+    int dead;
     pthread_mutex_t *right_fork;
     pthread_mutex_t *lift_fork;
     pthread_t philo_thread_id;
@@ -41,7 +42,7 @@ typedef struct s_main
 
 void check_if_dead(t_philosofre *philos, char c);
 void *rotene(void *philo);
-void ft_usleep(int time, t_philosofre *philo);
+int ft_usleep(int time, t_philosofre *philo);
 int eating(t_philosofre *philo);
 int sleeping(t_philosofre *philo);
 int thinking(t_philosofre *philo);

@@ -6,11 +6,13 @@
 /*   By: mabuyahy <mabuyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:31:09 by mabuyahy          #+#    #+#             */
-/*   Updated: 2025/03/18 01:04:49 by mabuyahy         ###   ########.fr       */
+/*   Updated: 2025/03/18 06:05:57by mabuyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+pthread_mutex_t philo_dead_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 long ft_gettimeofsim(t_philosofre *philo)
 {
@@ -55,9 +57,29 @@ int	wait_all_the_thread(t_main *main)
 	i = 0;
 	while (i < main->philos_num)
 	{
-		pthread_join(main->philos_ids[i], NULL);
+		pthread_detach(main->philos_ids[i]);
 		i++;
 	}
+	while (1)
+	{
+		pthread_mutex_lock(main->dead_mutex);
+		if (main->dead)
+		{
+		pthread_mutex_lock(main->dead_mutex);
+			break ;
+		}
+		pthread_mutex_lock(main->dead_mutex);
+		sleep(100);
+	}
+	i = 0;
+	pthread_mutex_lock(&philo_dead_mutex);
+	while (i < main->philos_num)
+	{
+		main->philos[i].dead = 1;
+		i++;
+	}		
+	pthread_mutex_unlock(&philo_dead_mutex);
+	usleep(100);
 	return (1);
 }
 

@@ -58,6 +58,7 @@ void philos_init(t_philosofre **philos, t_main *main)
 	{
 		(*philos)[i].time_of_last_meal = main->start_of_sim;
 		(*philos)[i].num = i;
+		(*philos)[i].dead = 0;
 		(*philos)[i].main = main;
 		if (last_philo(main, i))
 		{
