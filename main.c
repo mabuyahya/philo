@@ -12,8 +12,6 @@
 
 #include "philo.h"
 
-pthread_mutex_t philo_dead_mutex = PTHREAD_MUTEX_INITIALIZER;
-
 long ft_gettimeofsim(t_philosofre *philo)
 {
 	long time;
@@ -54,32 +52,34 @@ int	wait_all_the_thread(t_main *main)
 {
 	int	i;
 
-	i = 0;
-	while (i < main->philos_num)
-	{
-		pthread_detach(main->philos_ids[i]);
-		i++;
-	}
 	while (1)
 	{
-		pthread_mutex_lock(main->dead_mutex);
-		if (main->dead)
+		pthread_mutex_lock(main->i_am_dead_mutex);
+		if (main->i_am_dead)
 		{
-		pthread_mutex_lock(main->dead_mutex);
+		pthread_mutex_unlock(main->i_am_dead_mutex);
 			break ;
 		}
-		pthread_mutex_lock(main->dead_mutex);
+		pthread_mutex_unlock(main->i_am_dead_mutex);
 		sleep(100);
 	}
 	i = 0;
-	pthread_mutex_lock(&philo_dead_mutex);
+	pthread_mutex_lock(main->someone_else_dead_mutex);
 	while (i < main->philos_num)
 	{
-		main->philos[i].dead = 1;
+		main->philos[i].someone_else_dead = 1;
 		i++;
 	}		
-	pthread_mutex_unlock(&philo_dead_mutex);
-	usleep(100);
+	pthread_mutex_unlock(main->someone_else_dead_mutex);
+
+
+
+	i = 0;
+	while (i < main->philos_num)
+	{
+		pthread_join(main->philos_ids[i], NULL);
+		i++;
+	}
 	return (1);
 }
 
@@ -89,7 +89,7 @@ int    main(int argc, char **argv)
 	t_main	main;
 	
 
-	if (argc == 5 || argc == 6)	
+	if (argc == 5 || argc == 6)
 	{
 		main_init(&main, argv);
 		create_all_the_thread(&main);

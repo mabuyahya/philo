@@ -14,7 +14,7 @@ typedef struct s_main t_main;
 typedef struct s_philosofre
 {
     int num;
-    int dead;
+    int someone_else_dead;
     pthread_mutex_t *right_fork;
     pthread_mutex_t *lift_fork;
     pthread_t philo_thread_id;
@@ -29,8 +29,10 @@ typedef struct s_main
     char **args;
     int philos_num;
     pthread_mutex_t *forks;
-    pthread_mutex_t *dead_mutex;
-    int dead;
+    pthread_mutex_t *i_am_dead_mutex;
+    pthread_mutex_t *printf_mutex;
+    pthread_mutex_t *someone_else_dead_mutex;
+    int i_am_dead;
     pthread_mutex_t philo_num_mutex;
     pthread_t *philos_ids;
     t_philosofre *philos;
