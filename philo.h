@@ -51,7 +51,7 @@ int thinking(t_philosofre *philo);
 char **ft_strdup_matrix(char **str);
 void main_init(t_main *main, char **argv);
 int take_a_fork(t_philosofre *philos);
-void unlock_a_fork(t_philosofre *philos);
+int unlock_a_fork(t_philosofre *philos);
 long ft_gettimeofday(void);
 long ft_gettimeofsim(t_philosofre *philo);
 void philos_init(t_philosofre **philos, t_main *main);

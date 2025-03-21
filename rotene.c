@@ -6,7 +6,7 @@
 /*   By: mabuyahy <mabuyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 03:01:55 by mabuyahy          #+#    #+#             */
-/*   Updated: 2025/03/20 15:30:02 by mabuyahy         ###   ########.fr       */
+/*   Updated: 2025/03/21 14:31:49 by mabuyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ void *rotene(void *philo)
     {
         take_a_fork(philo);
         if (eating(philo))
+            return (NULL);
+        if (unlock_a_fork(philo))
             return (NULL);
         if (sleeping(philo))
             return (NULL);

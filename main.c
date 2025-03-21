@@ -61,7 +61,7 @@ int	wait_all_the_thread(t_main *main)
 			break ;
 		}
 		pthread_mutex_unlock(main->i_am_dead_mutex);
-		sleep(100);
+		usleep(100);
 	}
 	i = 0;
 	pthread_mutex_lock(main->someone_else_dead_mutex);
