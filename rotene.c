@@ -6,7 +6,7 @@
 /*   By: mabuyahy <mabuyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 03:01:55 by mabuyahy          #+#    #+#             */
-/*   Updated: 2025/03/21 14:31:49 by mabuyahy         ###   ########.fr       */
+/*   Updated: 2025/03/22 15:22:26 by mabuyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void *rotene(void *philo)
 {
     while (1)
     {
-        take_a_fork(philo);
+        if (take_a_fork(philo))
+            return (NULL);
         if (eating(philo))
             return (NULL);
         if (unlock_a_fork(philo))
@@ -33,7 +34,8 @@ int eating(t_philosofre *philo)
 	pthread_mutex_lock(philo->main->someone_else_dead_mutex);
     if (philo->someone_else_dead)
     {
-	pthread_mutex_unlock(philo->main->someone_else_dead_mutex);
+        pthread_mutex_unlock(philo->main->someone_else_dead_mutex);
+        unlock_a_fork(philo);
         return (1);
     }
 	pthread_mutex_unlock(philo->main->someone_else_dead_mutex);
@@ -44,10 +46,10 @@ int eating(t_philosofre *philo)
     philo->time_of_last_meal = ft_gettimeofsim(philo);
     if (ft_usleep(philo->main->time_to_eat, philo))
     {
+        usleep(0);
         unlock_a_fork(philo);
         return (1);
     }
-    unlock_a_fork(philo);
     return (0);
 }
 int sleeping(t_philosofre *philo)
