@@ -21,6 +21,7 @@ typedef struct s_philosofre
     t_main *main;
     long time_of_last_meal;
     long time_before_usleep;
+    int waiting_for_fork;
 
 } t_philosofre;
 
@@ -29,12 +30,14 @@ typedef struct s_main
     char **args;
     int philos_num;
     pthread_mutex_t *forks;
+    pthread_mutex_t *waiting_mutex;
     pthread_mutex_t *i_am_dead_mutex;
     pthread_mutex_t *printf_mutex;
     pthread_mutex_t *someone_else_dead_mutex;
     int i_am_dead;
     pthread_mutex_t philo_num_mutex;
     pthread_t *philos_ids;
+    pthread_t *monitors_ids;
     t_philosofre *philos;
     long start_of_sim;
     int time_to_eat;
@@ -55,4 +58,5 @@ int unlock_a_fork(t_philosofre *philos);
 long ft_gettimeofday(void);
 long ft_gettimeofsim(t_philosofre *philo);
 void philos_init(t_philosofre **philos, t_main *main);
+void *monitor_philo(void *philoo); 
 #endif

@@ -17,7 +17,7 @@ char **ft_strdup_matrix(char **str)
     int i;
 
     i = 0;
-    new_str = malloc(ft_strlen_matrix(str) + 1);
+    new_str = malloc((ft_strlen_matrix(str) + 1) * sizeof(char *));
     while (str[i])
     {
         new_str[i] = ft_strdup(str[i]);

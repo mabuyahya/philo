@@ -6,7 +6,7 @@
 /*   By: mabuyahy <mabuyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:31:09 by mabuyahy          #+#    #+#             */
-/*   Updated: 2025/03/22 15:11:47 by mabuyahy         ###   ########.fr       */
+/*   Updated: 2025/03/28 15:26:17 by mabuyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int create_all_the_thread(t_main *main)
 	while (i < main->philos_num)
 	{
 		pthread_create(&main->philos_ids[i], NULL, rotene, &main->philos[i]);
+		pthread_create(&main->monitors_ids[i], NULL, monitor_philo, &main->philos[i]);
 		usleep(100);
 		i++;
 	}
@@ -97,6 +98,7 @@ int	wait_all_the_thread(t_main *main)
 	while (i < main->philos_num)
 	{
 		pthread_join(main->philos_ids[i], NULL);
+		pthread_join(main->monitors_ids[i], NULL);
 		i++;
 	}
 	return (1);

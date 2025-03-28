@@ -6,7 +6,7 @@
 /*   By: mabuyahy <mabuyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 03:01:55 by mabuyahy          #+#    #+#             */
-/*   Updated: 2025/03/22 15:22:26 by mabuyahy         ###   ########.fr       */
+/*   Updated: 2025/03/28 15:56:30 by mabuyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,34 @@ void *rotene(void *philo)
             return (NULL);
     }
     return (NULL);
+}
+void *monitor_philo(void *philoo)
+{
+	t_philosofre *philo;
+    int waiting;
+    philo = (t_philosofre *)philoo;
+	while (1)
+	{
+		pthread_mutex_lock(philo->main->someone_else_dead_mutex);
+		if (philo->someone_else_dead)
+		{
+			pthread_mutex_unlock(philo->main->someone_else_dead_mutex);
+			return (NULL);
+		}
+		pthread_mutex_unlock(philo->main->someone_else_dead_mutex);
+        pthread_mutex_lock(philo->main->waiting_mutex);
+        waiting = philo->waiting_for_fork;
+        pthread_mutex_unlock(philo->main->waiting_mutex);
+        if (waiting && ft_gettimeofsim(philo) - philo->time_of_last_meal > philo->main->time_to_die)
+		{
+			pthread_mutex_lock(philo->main->i_am_dead_mutex);
+			philo->main->i_am_dead = 1;
+			pthread_mutex_unlock(philo->main->i_am_dead_mutex);
+			return (NULL);
+		}
+		usleep(1);
+	}
+	return (NULL);
 }
 int eating(t_philosofre *philo)
 {
