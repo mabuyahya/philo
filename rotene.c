@@ -6,7 +6,7 @@
 /*   By: mabuyahy <mabuyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 03:01:55 by mabuyahy          #+#    #+#             */
-/*   Updated: 2025/03/28 15:56:30 by mabuyahy         ###   ########.fr       */
+/*   Updated: 2025/03/28 17:13:44 by mabuyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,15 @@ int eating(t_philosofre *philo)
     if (ft_usleep(philo->main->time_to_eat, philo))
     {
         usleep(0);
+        unlock_a_fork(philo);
+        return (1);
+    }
+    philo->meals_eaten++;
+    if (philo->main->number_of_meals != -1 && philo->meals_eaten > philo->main->number_of_meals)
+    {
+        pthread_mutex_lock(philo->main->meals_flags_mutex);
+        philo->main->meals_flags[philo->num] = 1;
+        pthread_mutex_unlock(philo->main->meals_flags_mutex);
         unlock_a_fork(philo);
         return (1);
     }

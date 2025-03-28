@@ -6,7 +6,7 @@
 /*   By: mabuyahy <mabuyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:31:09 by mabuyahy          #+#    #+#             */
-/*   Updated: 2025/03/28 15:26:17 by mabuyahy         ###   ########.fr       */
+/*   Updated: 2025/03/28 17:14:56 by mabuyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,13 @@ int	wait_all_the_thread(t_main *main)
 {
 	int	i;
 	int	philo_dead_i;
+	int philos_eaten;
 
 	philo_dead_i = -1;
 	i = 0;
 	while (1)
 	{
+		philos_eaten = 1;
 		pthread_mutex_lock(main->i_am_dead_mutex);
 		if (main->i_am_dead)
 		{
@@ -65,8 +67,22 @@ int	wait_all_the_thread(t_main *main)
 			break ;
 		}
 		pthread_mutex_unlock(main->i_am_dead_mutex);
-		usleep(1);
+		while (i < main->philos_num)
+		{
+			pthread_mutex_lock(main->meals_flags_mutex);
+			if (main->meals_flags[i] == 0)
+			{
+				philos_eaten = 0;
+				pthread_mutex_unlock(main->meals_flags_mutex);
+				break;
+			}
+			pthread_mutex_unlock(main->meals_flags_mutex);
+			i++;
+		}
+		if (philos_eaten)
+			break ;
 	}
+	i = 0;
 	while (i < main->philos_num)
 	{
 		if (ft_gettimeofsim(main->philos) - main->philos[i].time_of_last_meal > main->time_to_die)
@@ -112,6 +128,10 @@ int    main(int argc, char **argv)
 
 	if (argc == 5 || argc == 6)
 	{
+		if (argc == 6)
+			main.number_of_meals = ft_atoi(argv[5]);
+		else
+			main.number_of_meals = -1;
 		main_init(&main, argv);
 		create_all_the_thread(&main);
 		wait_all_the_thread(&main);
