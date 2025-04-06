@@ -53,6 +53,8 @@ typedef struct s_main
 void *rotene(void *philo);
 int ft_usleep(int time, t_philosofre *philo);
 int eating(t_philosofre *philo);
+int check_____if____someone____is____dead(t_philosofre *philo);
+int safe_printf(t_philosofre *philo, char *str, char *color);
 int sleeping(t_philosofre *philo);
 int thinking(t_philosofre *philo);
 char **ft_strdup_matrix(char **str);

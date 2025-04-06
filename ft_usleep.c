@@ -6,7 +6,7 @@
 /*   By: mabuyahy <mabuyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 01:47:01 by mabuyahy          #+#    #+#             */
-/*   Updated: 2025/03/22 15:12:10 by mabuyahy         ###   ########.fr       */
+/*   Updated: 2025/04/06 11:49:01 by mabuyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,8 @@ int ft_usleep(int time, t_philosofre *philo)
 	start_time = ft_gettimeofsim(philo);
 	while (ft_gettimeofsim(philo) - start_time < time)
 	{
-		pthread_mutex_lock(philo->main->someone_else_dead_mutex);
-		if (philo->someone_else_dead)
-		{
-			pthread_mutex_unlock(philo->main->someone_else_dead_mutex);
+		if(check_____if____someone____is____dead(philo))
 			return (1);
-		}
-		pthread_mutex_unlock(philo->main->someone_else_dead_mutex);
-		if (ft_gettimeofsim(philo) - philo->time_of_last_meal > philo->main->time_to_die)
-		{
-			pthread_mutex_lock(philo->main->i_am_dead_mutex);
-			philo->main->i_am_dead = 1;
-			pthread_mutex_unlock(philo->main->i_am_dead_mutex);
-			return (1);
-		}
-		usleep(1);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mabuyahy <mabuyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:31:09 by mabuyahy          #+#    #+#             */
-/*   Updated: 2025/03/28 17:14:56 by mabuyahy         ###   ########.fr       */
+/*   Updated: 2025/04/05 17:59:47by mabuyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ long ft_gettimeofsim(t_philosofre *philo)
 
 	gettimeofday(&c_time, NULL);
 	time = (c_time.tv_sec * 1000 + c_time.tv_usec / 1000);
-	return (time - philo->main->start_of_sim);	
+	return (time - philo->main->start_of_sim);
 }
 
 long ft_gettimeofday(void)
@@ -29,12 +29,12 @@ long ft_gettimeofday(void)
 
 	gettimeofday(&c_time, NULL);
 	time = (c_time.tv_sec * 1000 + c_time.tv_usec / 1000);
-	return (time);	
+	return (time);
 }
 
-int create_all_the_thread(t_main *main) 
+int create_all_the_thread(t_main *main)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	main->start_of_sim = ft_gettimeofday();
@@ -42,47 +42,32 @@ int create_all_the_thread(t_main *main)
 	while (i < main->philos_num)
 	{
 		pthread_create(&main->philos_ids[i], NULL, rotene, &main->philos[i]);
-		pthread_create(&main->monitors_ids[i], NULL, monitor_philo, &main->philos[i]);
+		pthread_create(&main->philos_ids[i], NULL, monitor_philo, &main->philos[i]);
 		usleep(100);
 		i++;
 	}
 	return (1);
 }
 
-int	wait_all_the_thread(t_main *main)
+int wait_all_the_thread(t_main *main)
 {
-	int	i;
-	int	philo_dead_i;
-	int philos_eaten;
+	int i;
+	int philo_dead_i;
 
 	philo_dead_i = -1;
 	i = 0;
 	while (1)
 	{
-		philos_eaten = 1;
 		pthread_mutex_lock(main->i_am_dead_mutex);
 		if (main->i_am_dead)
 		{
-		pthread_mutex_unlock(main->i_am_dead_mutex);
-			break ;
+			pthread_mutex_unlock(main->i_am_dead_mutex);
+			break;
 		}
 		pthread_mutex_unlock(main->i_am_dead_mutex);
-		while (i < main->philos_num)
-		{
-			pthread_mutex_lock(main->meals_flags_mutex);
-			if (main->meals_flags[i] == 0)
-			{
-				philos_eaten = 0;
-				pthread_mutex_unlock(main->meals_flags_mutex);
-				break;
-			}
-			pthread_mutex_unlock(main->meals_flags_mutex);
-			i++;
-		}
-		if (philos_eaten)
-			break ;
 	}
 	i = 0;
+	pthread_mutex_lock(main->someone_else_dead_mutex);
 	while (i < main->philos_num)
 	{
 		if (ft_gettimeofsim(main->philos) - main->philos[i].time_of_last_meal > main->time_to_die)
@@ -92,34 +77,29 @@ int	wait_all_the_thread(t_main *main)
 		}
 		i++;
 	}
+	pthread_mutex_unlock(main->someone_else_dead_mutex);
 	if (philo_dead_i != -1)
 	{
 		pthread_mutex_lock(main->printf_mutex);
-		printf("[%li]    philo number %i died\n",
-			ft_gettimeofsim(main->philos), philo_dead_i + 1);
+		printf("%ld %d died\n", ft_gettimeofsim(main->philos), philo_dead_i + 1);
 		pthread_mutex_unlock(main->printf_mutex);
 	}
-	i = 0;
 	pthread_mutex_lock(main->someone_else_dead_mutex);
+	i = 0;
 	while (i < main->philos_num)
 	{
 		main->philos[i].someone_else_dead = 1;
 		i++;
-	}		
+	}
 	pthread_mutex_unlock(main->someone_else_dead_mutex);
-
-
-
 	i = 0;
 	while (i < main->philos_num)
 	{
 		pthread_join(main->philos_ids[i], NULL);
-		pthread_join(main->monitors_ids[i], NULL);
 		i++;
 	}
 	return (1);
 }
-
 
 int    main(int argc, char **argv)
 {
@@ -128,10 +108,6 @@ int    main(int argc, char **argv)
 
 	if (argc == 5 || argc == 6)
 	{
-		if (argc == 6)
-			main.number_of_meals = ft_atoi(argv[5]);
-		else
-			main.number_of_meals = -1;
 		main_init(&main, argv);
 		create_all_the_thread(&main);
 		wait_all_the_thread(&main);

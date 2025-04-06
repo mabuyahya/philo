@@ -2,26 +2,13 @@
 
 int take_a_fork(t_philosofre *philo)
 {
-	pthread_mutex_lock(philo->main->waiting_mutex);
-	philo->waiting_for_fork = 1;
-	pthread_mutex_unlock(philo->main->waiting_mutex);
 	pthread_mutex_lock(philo->right_fork);
 	pthread_mutex_lock(philo->lift_fork);
-	pthread_mutex_lock(philo->main->someone_else_dead_mutex);
-	if (philo->someone_else_dead)
+	if (check_____if____someone____is____dead(philo))
 	{
-		pthread_mutex_unlock(philo->main->someone_else_dead_mutex);
 		unlock_a_fork(philo);
 		return (1);
 	}
-	pthread_mutex_lock(philo->main->waiting_mutex);
-	philo->waiting_for_fork = 0;
-	pthread_mutex_unlock(philo->main->waiting_mutex);
-	pthread_mutex_unlock(philo->main->someone_else_dead_mutex);
-	pthread_mutex_lock(philo->main->printf_mutex);
-	printf("\033[1;31m%li   philo id %i has taken a fork\033[0m\n",
-		   ft_gettimeofsim(philo), philo->num + 1);
-	pthread_mutex_unlock(philo->main->printf_mutex);
 	return (0);
 }
 int unlock_a_fork(t_philosofre *philo)
