@@ -18,9 +18,9 @@ void	init_all_mutexs(pthread_mutex_t **forks, int num, t_main *main)
 
 	i = 0;
 	*forks = malloc(sizeof(pthread_mutex_t) * num);
-	main->i_am_dead_mutex = malloc(sizeof(pthread_mutex_t));
+	main->time_of_last_meal_mutex = malloc(sizeof(pthread_mutex_t));
 	main->waiting_mutex = malloc(sizeof(pthread_mutex_t));
-	main->someone_else_dead_mutex = malloc(sizeof(pthread_mutex_t));
+	main->i_am_dead_mutex = malloc(sizeof(pthread_mutex_t));
 	main->printf_mutex = malloc(sizeof(pthread_mutex_t));
 
 	while (i < num)
@@ -30,9 +30,10 @@ void	init_all_mutexs(pthread_mutex_t **forks, int num, t_main *main)
 	}
 	pthread_mutex_init(&main->philo_num_mutex, NULL);
 	pthread_mutex_init(&(*main->i_am_dead_mutex), NULL);
+	pthread_mutex_init(&(*main->time_of_last_meal_mutex), NULL);
 	pthread_mutex_init(&(*main->waiting_mutex), NULL);
 	pthread_mutex_init(&(*main->printf_mutex), NULL);
-	pthread_mutex_init(&(*main->someone_else_dead_mutex), NULL);
+	pthread_mutex_init(&(*main->i_am_dead_mutex), NULL);
 }
 
 void	main_init(t_main *main, char **argv)
@@ -41,7 +42,7 @@ void	main_init(t_main *main, char **argv)
 
 	i = 0;
 	main->args = ft_strdup_matrix(argv);
-	main->i_am_dead = 0;
+	main->philo_died = 0;
 	main->philos_num = ft_atoi(main->args[1]);
 	init_all_mutexs(&main->forks, main->philos_num, main);
 	main->time_to_eat = ft_atoi(main->args[3]);
@@ -70,7 +71,7 @@ void philos_init(t_philosofre **philos, t_main *main)
 		(*philos)[i].time_of_last_meal = main->start_of_sim;
 		(*philos)[i].num = i;
 		(*philos)[i].meals_eaten = 0;
-		(*philos)[i].someone_else_dead = 0;
+		(*philos)[i].i_am_dead = 0;
 		(*philos)[i].waiting_for_fork = 0;
 		(*philos)[i].main = main;
 		if (last_philo(main, i))

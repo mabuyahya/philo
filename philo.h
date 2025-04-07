@@ -14,7 +14,7 @@ typedef struct s_main t_main;
 typedef struct s_philosofre
 {
     int num;
-    int someone_else_dead;
+    int i_am_dead;
     pthread_mutex_t *right_fork;
     pthread_mutex_t *lift_fork;
     pthread_t philo_thread_id;
@@ -35,9 +35,9 @@ typedef struct s_main
     pthread_mutex_t *waiting_mutex;
     pthread_mutex_t *i_am_dead_mutex;
     pthread_mutex_t *printf_mutex;
-    pthread_mutex_t *someone_else_dead_mutex;
+    pthread_mutex_t *time_of_last_meal_mutex;
     pthread_mutex_t *meals_flags_mutex;
-    int i_am_dead;
+    int philo_died;
     pthread_mutex_t philo_num_mutex;
     pthread_t *philos_ids;
     pthread_t *monitors_ids;
@@ -53,9 +53,9 @@ typedef struct s_main
 void *rotene(void *philo);
 int ft_usleep(int time, t_philosofre *philo);
 int eating(t_philosofre *philo);
-int check_____if____someone____is____dead(t_philosofre *philo);
 int safe_printf(t_philosofre *philo, char *str, char *color);
 int sleeping(t_philosofre *philo);
+int check__if__i__am__dead(t_philosofre *philo);
 int thinking(t_philosofre *philo);
 char **ft_strdup_matrix(char **str);
 void main_init(t_main *main, char **argv);
