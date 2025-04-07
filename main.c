@@ -6,7 +6,7 @@
 /*   By: mabuyahy <mabuyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:31:09 by mabuyahy          #+#    #+#             */
-/*   Updated: 2025/04/07 15:11:10y mabuyahy         ###   ########.fr       */
+/*   Updated: 2025/04/07 19:35:18 by mabuyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,12 +135,66 @@ int wait_all_the_thread(t_main *main)
 	return (1);
 }
 
+int	valid_num(char *argv)
+{
+	int	i;
+
+	i = 0;
+	while (argv[i])
+	{
+		if (argv[i] < '0' || argv[i] > '9')
+		{
+			printf("only numbers in the input\n");
+			return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+void if_exist_free(void *ptr)
+{
+	if (ptr)
+		free(ptr);
+}
+
+void cleanup(t_main *main)
+{
+    int i;
+
+	i  = 0;
+    if_exist_free(main->forks);
+    if_exist_free(main->time_of_last_meal_mutex);
+    if_exist_free(main->waiting_mutex);
+    if_exist_free(main->i_am_dead_mutex);
+    if_exist_free(main->printf_mutex);
+    if_exist_free(main->meals_mutex);
+    if_exist_free(main->philos_ids);
+    if_exist_free(main->monitors_ids);
+    if_exist_free(main->philos);
+    i = 0;
+    while (main->args[i])
+    {
+        if_exist_free(main->args[i]);
+        i++;
+    }
+    if_exist_free(main->args);
+}
+
 int main(int argc, char **argv)
 {
 	t_main main;
+	int	i;
 
+	i = 1;
 	if (argc == 5 || argc == 6)
 	{
+		while (i < argc)
+		{
+			if (valid_num(argv[i]))
+				return (1);
+			i++;
+		}
 		if (argc == 6)
 			main.number_of_meals = ft_atoi(argv[5]);
 		else
@@ -151,4 +205,5 @@ int main(int argc, char **argv)
 	}
 	else
 		printf("the argv's should be 4 or 5\n");
+	cleanup(&main);
 }
