@@ -22,6 +22,7 @@ void	init_all_mutexs(pthread_mutex_t **forks, int num, t_main *main)
 	main->waiting_mutex = malloc(sizeof(pthread_mutex_t));
 	main->i_am_dead_mutex = malloc(sizeof(pthread_mutex_t));
 	main->printf_mutex = malloc(sizeof(pthread_mutex_t));
+	main->meals_mutex = malloc(sizeof(pthread_mutex_t));
 
 	while (i < num)
 	{
@@ -33,6 +34,7 @@ void	init_all_mutexs(pthread_mutex_t **forks, int num, t_main *main)
 	pthread_mutex_init(&(*main->time_of_last_meal_mutex), NULL);
 	pthread_mutex_init(&(*main->waiting_mutex), NULL);
 	pthread_mutex_init(&(*main->printf_mutex), NULL);
+	pthread_mutex_init(&(*main->meals_mutex), NULL);
 	pthread_mutex_init(&(*main->i_am_dead_mutex), NULL);
 }
 

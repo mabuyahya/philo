@@ -33,10 +33,10 @@ typedef struct s_main
     pthread_mutex_t *forks;
     int *meals_flags;
     pthread_mutex_t *waiting_mutex;
+    pthread_mutex_t *meals_mutex;
     pthread_mutex_t *i_am_dead_mutex;
     pthread_mutex_t *printf_mutex;
     pthread_mutex_t *time_of_last_meal_mutex;
-    pthread_mutex_t *meals_flags_mutex;
     int philo_died;
     pthread_mutex_t philo_num_mutex;
     pthread_t *philos_ids;

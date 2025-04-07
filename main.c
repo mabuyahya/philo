@@ -6,7 +6,7 @@
 /*   By: mabuyahy <mabuyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:31:09 by mabuyahy          #+#    #+#             */
-/*   Updated: 2025/04/07 12:30:40 by mabuyahy         ###   ########.fr       */
+/*   Updated: 2025/04/07 15:11:10y mabuyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,30 @@ void change_all_the_philos_iad_flag(t_main *main)
 	}
 	pthread_mutex_unlock(main->i_am_dead_mutex);
 }
+int	check_if_all_the_philo_eat(t_main *main)
+{
+	int	i;
+
+	i = 0;
+
+	if (main->number_of_meals != -1)
+	{
+		while (i < main->philos_num)
+		{
+			pthread_mutex_lock(main->meals_mutex);
+			if (main->philos[i].meals_eaten < main->number_of_meals)
+			{
+				pthread_mutex_unlock(main->meals_mutex);
+				return (0);
+			}
+			pthread_mutex_unlock(main->meals_mutex);
+			i++;
+		}
+	}
+	else
+		return (0);
+	return (1);
+}
 
 int wait_all_the_thread(t_main *main)
 {
@@ -94,6 +118,11 @@ int wait_all_the_thread(t_main *main)
 		{
 			change_all_the_philos_iad_flag(main);
 			break ;
+		}
+		if (check_if_all_the_philo_eat(main))
+		{
+			change_all_the_philos_iad_flag(main);
+			return (0);
 		}
 		usleep(100);
 	}
@@ -112,6 +141,10 @@ int main(int argc, char **argv)
 
 	if (argc == 5 || argc == 6)
 	{
+		if (argc == 6)
+			main.number_of_meals = ft_atoi(argv[5]);
+		else
+			main.number_of_meals = -1;
 		main_init(&main, argv);
 		create_all_the_thread(&main);
 		wait_all_the_thread(&main);

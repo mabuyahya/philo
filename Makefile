@@ -3,7 +3,7 @@ LIBFT_DIR = lib/libft
 LIBFT = libft
 
 CC = cc
-CFLAGS = -Wall -Werror -Wextra 
+CFLAGS = -Wall -Werror -Wextra -g
 SRCS = $(wildcard *.c)
 SIM_OBJ = $(SRCS:%.c=%.o)
 OBJ = $(addprefix obj/, $(SIM_OBJ))

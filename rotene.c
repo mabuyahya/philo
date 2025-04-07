@@ -14,6 +14,18 @@
 
 void *rotene(void *philo)
 {
+    t_philosofre *philoo;
+
+	philoo = (t_philosofre *)philo;
+	if (philoo->main->philos_num == 1)
+	{
+        pthread_mutex_lock(philoo->main->time_of_last_meal_mutex);
+        philoo->time_of_last_meal = 0;
+        pthread_mutex_unlock(philoo->main->time_of_last_meal_mutex);
+        safe_printf(philo, "has taken a fork", "\033[0;36m");
+		ft_usleep(philoo->main->time_to_die, philo);
+		return (NULL);
+	}
     while (1)
     {
         if (check__if__i__am__dead(philo))
@@ -45,6 +57,9 @@ int eating(t_philosofre *philo)
     pthread_mutex_lock(philo->main->time_of_last_meal_mutex);
     philo->time_of_last_meal = ft_gettimeofsim(philo);
     pthread_mutex_unlock(philo->main->time_of_last_meal_mutex);
+    pthread_mutex_lock(philo->main->meals_mutex);
+    philo->meals_eaten++;
+    pthread_mutex_unlock(philo->main->meals_mutex);
     if (ft_usleep(philo->main->time_to_eat, philo))
     {
         unlock_a_fork(philo);
