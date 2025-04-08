@@ -47,16 +47,32 @@ int safe_printf(t_philosofre *philo, char *str, char *color)
     pthread_mutex_unlock(philo->main->printf_mutex);
     return (0);
 }
+
 char **ft_strdup_matrix(char **str)
 {
     char **new_str;
     int i;
 
     i = 0;
+    if (!str)
+        return (NULL); 
     new_str = malloc((ft_strlen_matrix(str) + 1) * sizeof(char *));
+    if (!new_str)
+    return (NULL);
+    
     while (str[i])
     {
         new_str[i] = ft_strdup(str[i]);
+        if (!new_str[i])
+        {
+            while (i > 0)
+            {
+                free(new_str[i - 1]);
+                i--;
+            }
+            free(new_str);
+            return (NULL);
+        }
         i++;
     }
     new_str[i] = NULL;

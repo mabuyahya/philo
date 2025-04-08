@@ -6,7 +6,7 @@
 /*   By: mabuyahy <mabuyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:31:09 by mabuyahy          #+#    #+#             */
-/*   Updated: 2025/04/08 12:16:32 by mabuyahy         ###   ########.fr       */
+/*   Updated: 2025/04/08 13:02:57 by mabuyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,16 @@ int create_all_the_thread(t_main *main)
 
 	i = 0;
 	main->start_of_sim = ft_gettimeofday();
-	philos_init(&main->philos, main);
+	if(philos_init(&main->philos, main))
+		return (printf_return_free(main, "malloc error"));
 	while (i < main->philos_num)
 	{
-		pthread_create(&main->philos_ids[i], NULL, rotene, &main->philos[i]);
+		if(pthread_create(&main->philos_ids[i], NULL, rotene, &main->philos[i]) != 0)
+			return (printf_return_free(main, "pthread_create error"));
 		usleep(100);
 		i++;
 	}
-	return (1);
+	return (0);
 }
 
 int check_if_any_philo_died(t_main *main)
@@ -108,9 +110,9 @@ int	check_if_all_the_philo_eat(t_main *main)
 int wait_all_the_thread(t_main *main)
 {
 	int	i;
+	int philo_id;
 
 	i = 0;
-	int philo_id;
 	while (1)
 	{
 		philo_id = check_if_any_philo_died(main);
@@ -126,11 +128,7 @@ int wait_all_the_thread(t_main *main)
 		}
 		usleep(100);
 	}
-	while (i < main->philos_num)
-	{
-		pthread_join(main->philos_ids[i], NULL);
-		i++;
-	}
+	join_the_threads(main);
 	printf("\033[47m\033[40m[%ld] philo number %d is dead\033[0m\n", ft_gettimeofsim(main->philos), philo_id + 1);
 	return (1);
 }
@@ -144,7 +142,7 @@ int	valid_num(char *argv)
 	{
 		if (argv[i] < '0' || argv[i] > '9')
 		{
-			printf("only numbers in the input\n");
+			printf("posative only numbers in the input\n");
 			return (1);
 		}
 		i++;
@@ -181,6 +179,32 @@ void cleanup(t_main *main)
     if_exist_free(main->args);
 }
 
+void join_the_threads(t_main *main)
+{
+	int i;
+
+	i = 0;
+	while (i < main->philos_num)
+	{
+		pthread_join(main->philos_ids[i], NULL);
+		i++;
+	}
+}
+
+int check_if_valid_input(char **argv)
+{
+	int i;
+
+	i = 1;
+	while (argv[i])
+	{
+		if (valid_num(argv[i]))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int main(int argc, char **argv)
 {
 	t_main main;
@@ -190,26 +214,18 @@ int main(int argc, char **argv)
 	ft_memset(&main, 0, sizeof(t_main));
 	if (argc == 5 || argc == 6)
 	{
-		while (i < argc)
-		{
-			if (valid_num(argv[i]))
-				return (1);
-			i++;
-		}
+		if(check_if_valid_input(argv))
+			return (1);
 		if (argc == 6)
 			main.number_of_meals = ft_atoi(argv[5]);
 		else
 			main.number_of_meals = -1;
-		main_init(&main, argv);
-		create_all_the_thread(&main);
+		if(main_init(&main, argv))
+			return (1);
+		if(create_all_the_thread(&main))
+			return (1);
 		if (wait_all_the_thread(&main) == -1)
-		{
-			while (i < main.philos_num)
-			{
-				pthread_join(main.philos_ids[i], NULL);
-				i++;
-			}
-		}
+			join_the_threads(&main);
 	}
 	else
 		printf("the argv's should be 4 or 5\n");

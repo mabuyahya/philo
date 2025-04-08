@@ -58,11 +58,14 @@ int sleeping(t_philosofre *philo);
 int check__if__i__am__dead(t_philosofre *philo);
 int thinking(t_philosofre *philo);
 char **ft_strdup_matrix(char **str);
-void main_init(t_main *main, char **argv);
+int main_init(t_main *main, char **argv);
 int take_a_fork(t_philosofre *philos);
+void cleanup(t_main *main);
+void join_the_threads(t_main *main);
 int unlock_a_fork(t_philosofre *philos);
 long ft_gettimeofday(void);
 long ft_gettimeofsim(t_philosofre *philo);
-void philos_init(t_philosofre **philos, t_main *main);
+int philos_init(t_philosofre **philos, t_main *main);
+int printf_return_free(t_main *main, char *str);
 void *monitor_philo(void *philoo); 
 #endif
