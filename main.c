@@ -6,7 +6,7 @@
 /*   By: mabuyahy <mabuyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:31:09 by mabuyahy          #+#    #+#             */
-/*   Updated: 2025/04/08 13:52:20 by mabuyahy         ###   ########.fr       */
+/*   Updated: 2025/04/08 18:31:50 by mabuyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ int	main(int argc, char **argv)
 	ft_memset(&main, 0, sizeof(t_main));
 	if (argc == 5 || argc == 6)
 	{
-		if (check_if_valid_input(argv))
+		if (check_if_valid_input(argv, argc))
 			return (1);
 		if (argc == 6)
 			main.number_of_meals = ft_atoi(argv[5]);

@@ -6,7 +6,7 @@
 /*   By: mabuyahy <mabuyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 13:42:47 by mabuyahy          #+#    #+#             */
-/*   Updated: 2025/04/08 13:52:40 by mabuyahy         ###   ########.fr       */
+/*   Updated: 2025/04/08 18:30:33 by mabuyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ long	ft_gettimeofday(void)
 	return (time);
 }
 
-int	check_if_valid_input(char **argv)
+int	check_if_valid_input(char **argv, int argc)
 {
 	int	i;
 
@@ -42,6 +42,14 @@ int	check_if_valid_input(char **argv)
 		if (valid_num(argv[i]))
 			return (1);
 		i++;
+	}
+	if (argc == 6)
+	{
+		if (ft_atoi(argv[5]) == 0)
+		{
+			printf("the values can't be zero\n");
+			return (1);
+		}
 	}
 	return (0);
 }

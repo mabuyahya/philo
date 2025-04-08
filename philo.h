@@ -6,7 +6,7 @@
 /*   By: mabuyahy <mabuyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 13:26:30 by mabuyahy          #+#    #+#             */
-/*   Updated: 2025/04/08 15:21:36 by mabuyahy         ###   ########.fr       */
+/*   Updated: 2025/04/08 18:31:35 by mabuyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ typedef struct s_philosofre
 	long				time_before_usleep;
 	int					waiting_for_fork;
 	int					meals_eaten;
-
 }						t_philosofre;
 
 typedef struct s_main
@@ -67,7 +66,7 @@ int						valid_num(char *argv);
 void					if_exist_free(void *ptr);
 void					cleanup(t_main *main);
 void					join_the_threads(t_main *main);
-int						check_if_valid_input(char **argv);
+int						check_if_valid_input(char **argv, int argc);
 void					change_all_the_philos_iad_flag(t_main *main);
 int						ft_usleep(int time, t_philosofre *philo);
 int						eating(t_philosofre *philo);
