@@ -6,7 +6,7 @@
 /*   By: mabuyahy <mabuyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 18:31:09 by mabuyahy          #+#    #+#             */
-/*   Updated: 2025/04/07 19:35:18 by mabuyahy         ###   ########.fr       */
+/*   Updated: 2025/04/08 12:16:32 by mabuyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int wait_all_the_thread(t_main *main)
 		if (check_if_all_the_philo_eat(main))
 		{
 			change_all_the_philos_iad_flag(main);
-			return (0);
+			return (-1);
 		}
 		usleep(100);
 	}
@@ -131,7 +131,7 @@ int wait_all_the_thread(t_main *main)
 		pthread_join(main->philos_ids[i], NULL);
 		i++;
 	}
-	printf("[%ld] philo number %d is dead\n", ft_gettimeofsim(main->philos), philo_id + 1);
+	printf("\033[47m\033[40m[%ld] philo number %d is dead\033[0m\n", ft_gettimeofsim(main->philos), philo_id + 1);
 	return (1);
 }
 
@@ -173,7 +173,7 @@ void cleanup(t_main *main)
     if_exist_free(main->monitors_ids);
     if_exist_free(main->philos);
     i = 0;
-    while (main->args[i])
+    while (main->args && main->args[i])
     {
         if_exist_free(main->args[i]);
         i++;
@@ -187,6 +187,7 @@ int main(int argc, char **argv)
 	int	i;
 
 	i = 1;
+	ft_memset(&main, 0, sizeof(t_main));
 	if (argc == 5 || argc == 6)
 	{
 		while (i < argc)
@@ -201,7 +202,14 @@ int main(int argc, char **argv)
 			main.number_of_meals = -1;
 		main_init(&main, argv);
 		create_all_the_thread(&main);
-		wait_all_the_thread(&main);
+		if (wait_all_the_thread(&main) == -1)
+		{
+			while (i < main.philos_num)
+			{
+				pthread_join(main.philos_ids[i], NULL);
+				i++;
+			}
+		}
 	}
 	else
 		printf("the argv's should be 4 or 5\n");

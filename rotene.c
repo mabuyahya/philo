@@ -22,7 +22,7 @@ void *rotene(void *philo)
         pthread_mutex_lock(philoo->main->time_of_last_meal_mutex);
         philoo->time_of_last_meal = 0;
         pthread_mutex_unlock(philoo->main->time_of_last_meal_mutex);
-        safe_printf(philo, "has taken a fork", "\033[0;36m");
+        safe_printf(philo, "has taken a fork", "\033[1;31m");
 		ft_usleep(philoo->main->time_to_die, philo);
 		return (NULL);
 	}
@@ -44,12 +44,12 @@ int eating(t_philosofre *philo)
 {
     if(take_a_fork(philo))
         return (1);
-    if(safe_printf(philo, "has taken a fork", "\033[0;36m"))
+    if(safe_printf(philo, "has taken a fork", "\033[1;31m"))
     {
         unlock_a_fork(philo);
         return (1);
     }
-    if(safe_printf(philo, "is eating", "\033[0;32m"))
+    if(safe_printf(philo, "is eating", "\033[1;33m"))
     {
         unlock_a_fork(philo);
         return (1);
@@ -72,7 +72,7 @@ int sleeping(t_philosofre *philo)
 {
     if (check__if__i__am__dead(philo))
         return (1);
-    if(safe_printf(philo, "is sleeping", "\033[0;34m")) 
+    if(safe_printf(philo, "is sleeping", "\033[1;34m")) 
         return (1);
     if (ft_usleep(philo->main->time_to_sleep, philo))
         return (1);
@@ -83,7 +83,7 @@ int thinking(t_philosofre *philo)
 {
     if (check__if__i__am__dead(philo))
         return (1);
-    if(safe_printf(philo, "is thinking", "\033[0;35m"))
+    if(safe_printf(philo, "is thinking", "\033[1;35m"))
         return (1);
     return (0);
 }
