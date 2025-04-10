@@ -17,26 +17,26 @@
 #  define BUFFER_SIZE 1
 # endif
 
+# include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
-# include <fcntl.h>
 
 typedef struct s_listt
 {
 	char			*str_buf;
 	struct s_listt	*next;
-}				t_listt;
+}					t_listt;
 
-void	free_alll(t_listt **list, t_listt *new_list, char *buf);
-void	last_stuff(t_listt **list);
-void	cpy(t_listt *list, char *buf);
-int		len_to_endline(t_listt	*list);
-char	*gebline(t_listt *list);
-t_listt	*ft_lstlastt(t_listt *list);
-int		find_endline(t_listt *list);
-void	add(t_listt **list, char *buf);
-void	creat_listt(t_listt **list, int fd);
-char	*get_next_line(int fd);
+void				free_alll(t_listt **list, t_listt *new_list, char *buf);
+void				last_stuff(t_listt **list);
+void				cpy(t_listt *list, char *buf);
+int					len_to_endline(t_listt *list);
+char				*gebline(t_listt *list);
+t_listt				*ft_lstlastt(t_listt *list);
+int					find_endline(t_listt *list);
+void				add(t_listt **list, char *buf);
+void				creat_listt(t_listt **list, int fd);
+char				*get_next_line(int fd);
 
 #endif

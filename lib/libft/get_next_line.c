@@ -66,7 +66,7 @@ void	creat_listt(t_listt **list, int fd)
 	int		char_read;
 	char	*buf;
 
-	while (!(find_endline (*list)))
+	while (!(find_endline(*list)))
 	{
 		buf = malloc(BUFFER_SIZE + 1);
 		if (NULL == buf)

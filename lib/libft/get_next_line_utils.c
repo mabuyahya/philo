@@ -37,7 +37,7 @@ void	free_alll(t_listt **list, t_listt *new_list, char *buf)
 		free(new_list);
 		new_list = NULL;
 	}
-}	
+}
 
 void	last_stuff(t_listt **list)
 {
@@ -54,7 +54,7 @@ void	last_stuff(t_listt **list)
 		*list = NULL;
 		return ;
 	}
-	last_listt = ft_lstlastt (*list);
+	last_listt = ft_lstlastt(*list);
 	i = 0;
 	j = 0;
 	while (last_listt->str_buf[i] && last_listt->str_buf[i] != '\n')
@@ -67,7 +67,7 @@ void	last_stuff(t_listt **list)
 	free_alll(list, new_list, buf);
 }
 
-void	cpy(t_listt *list, char	*str)
+void	cpy(t_listt *list, char *str)
 {
 	int	i;
 	int	j;
@@ -113,7 +113,7 @@ int	len_to_endline(t_listt *list)
 			++len;
 		}
 		list = list->next;
-	}	
+	}
 	return (len);
 }
 
