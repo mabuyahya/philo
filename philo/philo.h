@@ -6,15 +6,16 @@
 /*   By: mabuyahy <mabuyahy@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 13:26:30 by mabuyahy          #+#    #+#             */
-/*   Updated: 2025/04/08 18:31:35 by mabuyahy         ###   ########.fr       */
+/*   Updated: 2025/04/10 17:03:27 by mabuyahy         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include "lib/libft/libft.h"
 # include <pthread.h>
+# include <unistd.h>
+# include <stdlib.h>
 # include <stdio.h>
 # include <sys/time.h>
 
@@ -62,6 +63,8 @@ typedef struct s_main
 void					*rotene(void *philo);
 long					ft_gettimeofsim(t_philosofre *philo);
 long					ft_gettimeofday(void);
+int						ft_atoi(const char *str);
+void					*ft_memset(void *s, int c, size_t n);
 int						valid_num(char *argv);
 void					if_exist_free(void *ptr);
 void					cleanup(t_main *main);
@@ -75,6 +78,7 @@ int						safe_printf(t_philosofre *philo, char *str,
 int						sleeping(t_philosofre *philo);
 int						check__if__i__am__dead(t_philosofre *philo);
 int						thinking(t_philosofre *philo);
+char					*ft_strdup(const char *src);
 char					**ft_strdup_matrix(char **str);
 int						main_init(t_main *main, char **argv);
 int						take_a_fork(t_philosofre *philos);
